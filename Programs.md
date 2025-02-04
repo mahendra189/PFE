@@ -3,10 +3,10 @@
 ### **1. Program to Calculate the Area of a Circle and Triangle**
 ```python
 # 1.py
-import math
+PI = 3.14
 
 def area_circle(radius):
-    return math.pi * radius ** 2
+    return PI * radius ** 2
 
 def area_triangle(base, height):
     return 0.5 * base * height
@@ -77,16 +77,15 @@ print("10 is:", check_even_odd(10))
 ### **7. Program to Check if a Number is Positive, Negative or Zero**
 ```python
 # 7.py
-def check_number(num):
-    if num > 0:
-        return "Positive"
-    elif num < 0:
-        return "Negative"
-    else:
-        return "Zero"
+num = 6
 
-# Example usage
-print("5 is:", check_number(5))
+print("6 is ")
+if num > 0:
+    print("Positive")
+elif num < 0:
+    print("Negative")
+else:
+    print("Zero")
 ```
 
 ---
@@ -149,8 +148,15 @@ print("Missing card:", missing_card([1, 2, 4, 5]))
 ```python
 # 12.py
 def max_of_three(a, b, c):
-    return max(a, b, c)
-
+    if a>b:
+        if a>c:
+            return a
+        else:
+            return c
+    elif b>c:
+        return b
+    else:
+        return c
 # Example usage
 print("Max of 10, 20, 30:", max_of_three(10, 20, 30))
 ```
@@ -173,6 +179,8 @@ print("Is 2024 a leap year?", is_leap(2024))
 ```python
 # 14.py
 def is_valid_date(year, month, day):
+    def is_leap(year):
+        return year % 4 == 0 and (year % 100 !=0 or year % 400 == 0)
     if month < 1 or month > 12:
         return False
     if day < 1 or day > 31:
@@ -264,16 +272,57 @@ print("Pins standing:", bowling_pins_standing([1]*10, [2, 4, 6]))
 ### **19. Program to Calculate the Number of Seconds Between Two Timestamps**
 ```python
 # 19.py
-from datetime import datetime
+def take_timestamp():
+    """Takes timestamp input from user and returns (hour, minute, second)."""
+    print("Enter the timestamp: ")
+    hour = int(input("Hour: "))
+    minute = int(input("Minutes: "))
+    second = int(input("Seconds: "))
+    return hour, minute, second
 
-def seconds_between(t1, t2):
-    fmt = "%Y-%m-%d %H:%M:%S"
-    dt1 = datetime.strptime(t1, fmt)
-    dt2 = datetime.strptime(t2, fmt)
-    return abs((dt2 - dt1).total_seconds())
 
-# Example usage
-print("Seconds between:", seconds_between("2023-01-01 00:00:00", "2023-01-01 00:01:00"))
+def validate_timestamps(t1, t2):
+    """Checks if t2 is later than t1, otherwise exits."""
+    if t1 >= t2:
+        print("Error: The second timestamp should be later than the first one.")
+        exit()
+    
+
+def print_time(timestamp):
+    """Formats timestamp as HH:MM:SS string."""
+    return f"{timestamp[0]:02}:{timestamp[1]:02}:{timestamp[2]:02}"
+
+
+# Take timestamps from the user
+t1 = take_timestamp()
+t2 = take_timestamp()
+
+# Validate timestamps
+validate_timestamps(t1, t2)
+
+# Calculate differences
+hour_diff = t2[0] - t1[0]
+min_diff = t2[1] - t1[1]
+sec_diff = t2[2] - t1[2]
+
+# Adjust if seconds or minutes go negative (borrow from higher units)
+if sec_diff < 0:
+    sec_diff += 60
+    min_diff -= 1
+
+if min_diff < 0:
+    min_diff += 60
+    hour_diff -= 1
+
+# Calculate total difference in seconds
+total_seconds = (hour_diff * 3600) + (min_diff * 60) + sec_diff
+
+# Output results
+print(f"\nTimestamp 1: {print_time(t1)}")
+print(f"Timestamp 2: {print_time(t2)}")
+print(f"Time Difference: {hour_diff} hours, {min_diff} minutes, {sec_diff} seconds")
+print(f"Total Difference: {total_seconds} seconds")
+
 ```
 
 ---
@@ -295,7 +344,9 @@ display_natural_numbers(10)
 ```python
 # 21.py
 def factorial(n):
-    return 1 if n == 0 else n * factorial(n-1)
+    if n<=1:
+        return 1
+    return n * factorial(n)
 
 # Example usage
 print("Factorial of 5:", factorial(5))
@@ -430,7 +481,7 @@ print("Combined list:", result)
 ```python
 # 32.py
 def is_empty(lst):
-    return not bool(lst)
+    return len(lst) == 0
 
 # Example usage
 print("Is list empty?", is_empty([]))
@@ -454,6 +505,10 @@ print("Largest number:", find_largest([10, 20, 30, 40]))
 ```python
 # 34.py
 def second_largest(lst):
+    if len(lst) ==0:
+        return -1
+    if len(lst) < 2:
+        return lst[0]
     return sorted(lst)[-2]
 
 # Example usage
@@ -466,8 +521,13 @@ print("Second largest number:", second_largest([10, 20, 30, 40]))
 ```python
 # 35.py
 def separate_even_odd(lst):
-    even = [x for x in lst if x % 2 == 0]
-    odd = [x for x in lst if x % 2 != 0]
+    even = []
+    odd = []
+    for x in lst:
+        if x % 2 ==0:
+            even.append(x)
+        else:
+            odd.append(x)
     return even, odd
 
 # Example usage
@@ -508,11 +568,15 @@ print("Random numbers:", random_numbers)
 ### **38. Program to Remove Duplicate Items from a List**
 ```python
 # 38.py
-def remove_duplicates(lst):
-    return list(set(lst))
+List = [1,1,1,2,2,3,3]
+final = []
+duplicate = []
+for n in List:
+    if n not in duplicate:
+        duplicate.append(n)
+        final.append(n)
+print("List with No Duplicates: " ,final)
 
-# Example usage
-print("List without duplicates:", remove_duplicates([1, 2, 2, 3, 4, 4]))
 ```
 
 ---
